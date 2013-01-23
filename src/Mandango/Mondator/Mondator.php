@@ -217,9 +217,6 @@ class Mondator
                 $classExtension->newConfigClassesProcess($class, $configClasses, $newConfigClasses);
 
                 foreach ($newConfigClasses as $newClass => $newConfigClass) {
-                    if (isset($classesExtensions[$newClass])) {
-                        throw new \RuntimeException(sprintf('The class "%s" has several config classes.', $class));
-                    }
                     $configClasses[$newClass] = new \ArrayObject($newConfigClass);
                 }
 
