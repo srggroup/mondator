@@ -15,7 +15,7 @@
         "twig/twig": ">=1.2"
     },
     "replace": {
-        "yunait/mandango": "dev-master"
+        "yunait/mondator": "dev-master"
     },
     "autoload": {
         "psr-0": { "Mandango\\Mondator\\": "src/" }
