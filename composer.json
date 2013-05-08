@@ -1,10 +1,14 @@
 {
-    "name": "yunait/mondator",
+    "name": "mongator/mondator",
     "description": "Easy and flexible class generator for PHP",
     "keywords": ["class-generator"],
     "type": "library",
     "license": "MIT",
     "authors": [
+        {
+            "name":  "Máximo Cuadros",
+            "email": "maximo@yunait.com"
+        },
         {
             "name":  "Pablo Díez",
             "email": "pablodip@gmail.com"
@@ -15,7 +19,7 @@
         "twig/twig": ">=1.2"
     },
     "replace": {
-        "yunait/mondator": "dev-master"
+        "mandango/mondator": "dev-master"
     },
     "autoload": {
         "psr-0": { "Mandango\\Mondator\\": "src/" }
