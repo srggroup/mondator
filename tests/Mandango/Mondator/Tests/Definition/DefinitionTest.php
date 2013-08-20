@@ -210,7 +210,7 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
     public function testSetConstants()
     {
         $definition = new Definition('Class1');
-        $constants = [new Constant('X', 'Y'), new Constant('Z', 'W')];
+        $constants = array(new Constant('X', 'Y'), new Constant('Z', 'W'));
 
         $definition->setConstants($constants);
 
