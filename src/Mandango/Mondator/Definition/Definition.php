@@ -25,6 +25,7 @@ class Definition
     private $interfaces;
     private $final;
     private $abstract;
+    private $constants;
     private $properties;
     private $methods;
     private $docComment;
@@ -42,6 +43,7 @@ class Definition
         $this->interfaces = array();
         $this->final = false;
         $this->abstract = false;
+        $this->constants = array();
         $this->properties = array();
         $this->methods = array();
     }
@@ -211,6 +213,108 @@ class Definition
     public function isAbstract()
     {
         return $this->abstract;
+    }
+
+    /**
+     * Add a constant.
+     *
+     * @param Mandango\Mondator\Definition\Constant $constant The constant.
+     *
+     * @api
+     */
+    public function addConstant(Constant $constant)
+    {
+        $this->constants[] = $constant;
+    }
+
+    /**
+     * Set the constants.
+     *
+     * @param array $constants An array of constants.
+     *
+     * @api
+     */
+    public function setConstants(array $constants)
+    {
+        $this->constants = array();
+        foreach ($constants as $constant) {
+            $this->addConstant($constant);
+        }
+    }
+
+    /**
+     * Returns the constants.
+     *
+     * @return array The constants.
+     *
+     * @api
+     */
+    public function getConstants()
+    {
+        return $this->constants;
+    }
+
+    /**
+     * Returns if a constant exists by name.
+     *
+     * @param string $name The constant name.
+     *
+     * @return bool If the constant exists.
+     *
+     * @api
+     */
+    public function hasConstantByName($name)
+    {
+        foreach ($this->constants as $constant) {
+            if ($constant->getName() == $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a constant by name.
+     *
+     * @param string $name The constant name.
+     *
+     * @return Mandango\Mondator\Definition\Constant The constant.
+     *
+     * @throws \InvalidArgumentException If the constant does not exists.
+     *
+     * @api
+     */
+    public function getConstantByName($name)
+    {
+        foreach ($this->constants as $constant) {
+            if ($constant->getName() == $name) {
+                return $constant;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('The constant "%s" does not exists.', $name));
+    }
+
+    /**
+     * Remove property by name.
+     *
+     * @param string $name The constant name.
+     *
+     * @throws \InvalidArgumentException If the property does not exists.
+     *
+     * @api
+     */
+    public function removeConstantByName($name)
+    {
+        foreach ($this->constants as $key => $constant) {
+            if ($constant->getName() == $name) {
+                unset($this->constants[$key]);
+                return;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('The constant "%s" does not exists.', $name));
     }
 
     /**

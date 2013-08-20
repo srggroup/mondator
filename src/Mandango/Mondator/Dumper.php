@@ -73,10 +73,11 @@ class Dumper
             $this->startFile().
             $this->addNamespace().
             $this->startClass().
+            $this->addConstants().
             $this->addProperties().
             $this->addMethods().
             $this->endClass()
-        ;
+            ;
     }
 
     /**
@@ -165,6 +166,17 @@ $declaration
 EOF;
 
         return $code;
+    }
+
+    private function addConstants()
+    {
+        $code = '';
+
+        foreach ($this->definition->getConstants() as $constant) {
+            $code = $code . "\n    const {$constant->getName()} = {$constant->getValue()};";
+        }
+
+        return "$code\n";
     }
 
     private function addProperties()

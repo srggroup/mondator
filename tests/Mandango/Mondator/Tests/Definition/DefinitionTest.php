@@ -11,6 +11,7 @@
 
 namespace Mandango\Mondator\Tests\Definition;
 
+use Mandango\Mondator\Definition\Constant;
 use Mandango\Mondator\Definition\Definition;
 use Mandango\Mondator\Definition\Method;
 use Mandango\Mondator\Definition\Property;
@@ -192,5 +193,85 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
         $definition = new Definition('Class1');
         $definition->setDocComment('myDoc');
         $this->assertSame('myDoc', $definition->getDocComment());
+    }
+
+    public function testAddConstant()
+    {
+        $definition = new Definition('Class1');
+        $constant = new Constant('X', 'Y');
+
+        $definition->addConstant($constant);
+        $constants = $definition->getConstants();
+
+        $this->assertContains($constant, $constants);
+        $this->assertEquals(sizeof($constants), 1);
+    }
+
+    public function testSetConstants()
+    {
+        $definition = new Definition('Class1');
+        $constants = array(new Constant('X', 'Y'), new Constant('Z', 'W'));
+
+        $definition->setConstants($constants);
+
+        $this->assertEquals($definition->getConstants(), $constants);
+    }
+
+    public function testHasConstantByNameShouldBeTrue()
+    {
+        $definition = new Definition('Class1');
+        $constant = new Constant('X', 'Y');
+
+        $definition->addConstant($constant);
+
+        $this->assertTrue($definition->hasConstantByName('X'));
+    }
+
+    public function testHasConstantByNameShouldBeFalse()
+    {
+        $definition = new Definition('Class1');
+
+        $this->assertFalse($definition->hasConstantByName('X'));
+    }
+
+    public function testGetConstantByName()
+    {
+        $definition = new Definition('Class1');
+        $constant = new Constant('X', 'Y');
+
+        $definition->addConstant($constant);
+
+        $this->assertEquals($definition->getConstantByName('X'), $constant);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetConstantByNameShouldThrowException()
+    {
+        $definition = new Definition('Class1');
+
+        $definition->getConstantByName('X');
+    }
+
+    public function testRemoveConstantByname()
+    {
+        $definition = new Definition('Class1');
+        $constant = new Constant('X', 'Y');
+
+        $definition->addConstant($constant);
+        $definition->removeConstantByName('X');
+
+        $this->assertTrue(sizeof($definition->getConstants()) === 0);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testRemoveConstantBynameShouldThrowException()
+    {
+        $definition = new Definition('Class1');
+
+        $definition->removeConstantByName('X');
     }
 }
