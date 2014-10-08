@@ -285,7 +285,7 @@ class Mondator
                     if (false === @file_put_contents($tmpFile, $content) || !@rename($tmpFile, $file)) {
                         throw new \RuntimeException(sprintf('Failed to write the file "%s".', $file));
                     }
-                    chmod($file, 0644);
+                    @chmod($file, 0666 & ~umask());
                 }
             }
         }
