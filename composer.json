@@ -1,5 +1,5 @@
 {
-    "name": "mongator/mondator",
+    "name": "srg/mondator",
     "description": "Easy and flexible class generator for PHP",
     "keywords": ["class-generator"],
     "type": "library",
