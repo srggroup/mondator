@@ -351,12 +351,18 @@ abstract class ClassExtension
             \s
             \$
             (?P<name>[a-zA-Z0-9_]+)
+            (?P<value>\={1}[^;]*)
             ;
         /xU';
         preg_match_all($expression, $result, $matches);
 
         for ($i = 0; $i <= count($matches[0]) - 1; $i++) {
-            $property = new Property($matches['visibility'][$i], $matches['name'][$i], null);
+            $result=str_replace($matches[0][$i], '', $result);
+            $value=null;
+            if(!empty($matches['value'][$i])){
+                eval('$value'.$matches['value'][$i].';');
+            }
+            $property = new Property($matches['visibility'][$i], $matches['name'][$i], $value);
             if ($matches['static'][$i]) {
                 $property->setStatic(true);
             }
