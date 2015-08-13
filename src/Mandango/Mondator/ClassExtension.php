@@ -357,8 +357,8 @@ abstract class ClassExtension
         preg_match_all($expression, $result, $matches);
 
         for ($i = 0; $i <= count($matches[0]) - 1; $i++) {
-            $result=str_replace($matches[0][$i], '', $result);
             $value=null;
+            $result=str_replace($matches[0][$i], '', $result);
             if(!empty($matches['value'][$i])){
                 eval('$value'.$matches['value'][$i].';');
             }
