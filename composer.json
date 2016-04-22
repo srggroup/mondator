@@ -12,6 +12,10 @@
         {
             "name":  "Pablo Díez",
             "email": "pablodip@gmail.com"
+        },
+        {
+            "name":  "Ádám Bálint",
+            "email": "adam.balint@srg.hu"
         }
     ],
     "require": {
