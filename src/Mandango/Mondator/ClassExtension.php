@@ -409,7 +409,8 @@ abstract class ClassExtension
                 throw new \RuntimeException('Twig is required to use templates.');
             }
 
-            $twig = new \Twig_Loader_String($loader, array(
+	          $loader = new \Twig_Loader_String();
+            $twig = new \Twig_Environment($loader, array(
                 'autoescape'       => false,
                 'strict_variables' => true,
                 'debug'            => true,
