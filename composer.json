@@ -20,7 +20,7 @@
     ],
     "require": {
         "php":       "^7",
-        "twig/twig": "^1.2"
+        "twig/twig": "^2.1"
     },
     "autoload": {
         "psr-0": { "Mandango\\Mondator\\": "src/" }
