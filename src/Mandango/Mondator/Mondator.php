@@ -23,6 +23,7 @@ class Mondator
     private $configClasses;
     private $extensions;
     private $outputs;
+	private $options;
 
     /**
      * Constructor.

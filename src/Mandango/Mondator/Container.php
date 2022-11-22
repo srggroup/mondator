@@ -11,6 +11,8 @@
 
 namespace Mandango\Mondator;
 
+use Traversable;
+
 /**
  * Container of definitions.
  *
@@ -137,22 +139,22 @@ class Container implements \ArrayAccess, \Countable, \IteratorAggregate
     /*
      * \ArrayAccess interface.
      */
-    public function offsetExists($name)
+    public function offsetExists($name): bool
     {
         return $this->hasDefinition($name);
     }
 
-    public function offsetSet($name, $definition)
+    public function offsetSet($name, $definition): void
     {
         $this->setDefinition($name, $definition);
     }
 
-    public function offsetGet($name)
+    public function offsetGet($name): mixed
     {
         return $this->getDefinition($name);
     }
 
-    public function offsetUnset($name)
+    public function offsetUnset($name): void
     {
         $this->removeDefinition($name);
     }
@@ -164,7 +166,7 @@ class Container implements \ArrayAccess, \Countable, \IteratorAggregate
      *
      * @api
      */
-    public function count()
+    public function count(): int
     {
         return count($this->definitions);
     }
@@ -176,7 +178,7 @@ class Container implements \ArrayAccess, \Countable, \IteratorAggregate
      *
      * @api
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->definitions);
     }
