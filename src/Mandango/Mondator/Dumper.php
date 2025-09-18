@@ -15,256 +15,240 @@ use Mandango\Mondator\Definition\Definition as BaseDefinition;
 
 /**
  * The Mondator Dumper.
- *
- * @author Pablo Díez <pablodip@gmail.com>
- *
- * @api
  */
-class Dumper
-{
-    private $definition;
+class Dumper {
 
-    /**
-     * Constructor.
-     *
-     * @param Mandango\Mondator\Definition\Definition $definition The definition.
-     *
-     * @api
-     */
-    public function __construct(BaseDefinition $definition)
-    {
-        $this->setDefinition($definition);
-    }
 
-    /**
-     * Set the definition.
-     *
-     * @param Mandango\Mondator\Definition\Definition $definition The definition.
-     *
-     * @api
-     */
-    public function setDefinition(BaseDefinition $definition)
-    {
-        $this->definition = $definition;
-    }
+	private $definition;
 
-    /**
-     * Returns the definition
-     *
-     * @return Mandango\Mondator\Definition\Definition The definition.
-     *
-     * @api
-     */
-    public function getDefinition()
-    {
-        return $this->definition;
-    }
 
-    /**
-     * Dump the definition.
-     *
-     * @return string The PHP code of the definition.
-     *
-     * @api
-     */
-    public function dump()
-    {
-        return
-            $this->startFile().
-            $this->addNamespace().
-            $this->startClass().
-            $this->addConstants().
-            $this->addProperties().
-            $this->addMethods().
-            $this->endClass()
-            ;
-    }
+	/**
+	 * @param Mandango\Mondator\Definition\Definition $definition The definition.
+	 */
+	public function __construct(BaseDefinition $definition) {
+		$this->setDefinition($definition);
+	}
 
-    /**
-     * Export an array.
-     *
-     * Based on Symfony\Component\DependencyInjection\Dumper\PhpDumper::exportParameters
-     * http://github.com/symfony/symfony
-     *
-     * @param array $array  The array.
-     * @param int   $indent The indent.
-     *
-     * @return string The array exported.
-     */
-    static public function exportArray(array $array, $indent)
-    {
-        $code = array();
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $value = self::exportArray($value, $indent + 4);
-            } else {
-                $value = null === $value ? 'null' : var_export($value, true);
-            }
 
-            $code[] = sprintf('%s%s => %s,', str_repeat(' ', $indent), var_export($key, true), $value);
-        }
+	/**
+	 * Set the definition.
+	 *
+	 * @param Mandango\Mondator\Definition\Definition $definition The definition.
+	 */
+	public function setDefinition(BaseDefinition $definition) {
+		$this->definition = $definition;
+	}
 
-        return sprintf("array(\n%s\n%s)", implode("\n", $code), str_repeat(' ', $indent - 4));
-    }
 
-    private function startFile()
-    {
-        return <<<EOF
+	/**
+	 * Returns the definition
+	 *
+	 * @return Mandango\Mondator\Definition\Definition The definition.
+	 */
+	public function getDefinition() {
+		return $this->definition;
+	}
+
+
+	/**
+	 * Dump the definition.
+	 *
+	 * @return string The PHP code of the definition.
+	 */
+	public function dump() {
+		return $this->startFile() .
+			$this->addNamespace() .
+			$this->startClass() .
+			$this->addConstants() .
+			$this->addProperties() .
+			$this->addMethods() .
+			$this->endClass();
+	}
+
+
+	/**
+	 * Export an array.
+	 *
+	 * Based on Symfony\Component\DependencyInjection\Dumper\PhpDumper::exportParameters
+	 * http://github.com/symfony/symfony
+	 *
+	 * @param array $array The array.
+	 * @param int $indent  The indent.
+	 * @return string The array exported.
+	 */
+	public static function exportArray(array $array, $indent) {
+		$code = [];
+		foreach ($array as $key => $value) {
+			if (is_array($value)) {
+				$value = self::exportArray($value, $indent + 4);
+			} else {
+				$value = $value === null ? 'null' : var_export($value, true);
+			}
+
+			$code[] = sprintf('%s%s => %s,', str_repeat(' ', $indent), var_export($key, true), $value);
+		}
+
+		return sprintf("array(\n%s\n%s)", implode("\n", $code), str_repeat(' ', $indent - 4));
+	}
+
+
+	private function startFile() {
+		return <<<EOF
 <?php
 
 EOF;
-    }
+	}
 
-    private function addNamespace()
-    {
-        if (!$namespace = $this->definition->getNamespace()) {
-            return '';
-        }
 
-        return <<<EOF
+	private function addNamespace() {
+		if (!$namespace = $this->definition->getNamespace()) {
+			return '';
+		}
+
+		return <<<EOF
 
 namespace $namespace;
 
 EOF;
-    }
+	}
 
-    private function startClass()
-    {
-        $code = "\n";
 
-        // doc comment
-        if ($docComment = $this->definition->getDocComment()) {
-            $code .= $docComment."\n";
-        }
+	private function startClass() {
+		$code = "\n";
 
-        /*
-         * declaration
-         */
-        $declaration = '';
+		// doc comment
+		if ($docComment = $this->definition->getDocComment()) {
+			$code .= $docComment . "\n";
+		}
 
-        // abstract
-        if ($this->definition->isAbstract()) {
-            $declaration .= 'abstract ';
-        }
+		/*
+		 * declaration
+		 */
+		$declaration = '';
 
-        // class
-        $declaration .= 'class '.$this->definition->getClassName();
+		// abstract
+		if ($this->definition->isAbstract()) {
+			$declaration .= 'abstract ';
+		}
 
-        // parent class
-        if ($parentClass = $this->definition->getParentClass()) {
-            $declaration .= ' extends '.$parentClass;
-        }
+		// class
+		$declaration .= 'class ' . $this->definition->getClassName();
 
-        // interfaces
-        if ($interfaces = $this->definition->getInterfaces()) {
-            $declaration .= ' implements '.implode(', ', $interfaces);
-        }
+		// parent class
+		if ($parentClass = $this->definition->getParentClass()) {
+			$declaration .= ' extends ' . $parentClass;
+		}
 
-        $code .= <<<EOF
+		// interfaces
+		if ($interfaces = $this->definition->getInterfaces()) {
+			$declaration .= ' implements ' . implode(', ', $interfaces);
+		}
+
+		return $code . <<<EOF
 $declaration
 {
 EOF;
+	}
 
-        return $code;
-    }
 
-    private function addConstants()
-    {
-        $code = '';
+	private function addConstants() {
+		$code = '';
 
-        foreach ($this->definition->getConstants() as $constant) {
-            $code = $code . "\n    const {$constant->getName()} = {$constant->getValue()};";
-        }
+		foreach ($this->definition->getConstants() as $constant) {
+			$code .= "\n    const {$constant->getName()} = {$constant->getValue()};";
+		}
 
-        return "$code\n";
-    }
+		return "$code\n";
+	}
 
-    private function addProperties()
-    {
-        $code = '';
 
-        $properties = $this->definition->getProperties();
-        foreach ($properties as $property) {
-            $code .= "\n";
+	private function addProperties() {
+		$code = '';
 
-            if ($docComment = $property->getDocComment()) {
-                $code .= $docComment."\n";
-            }
-            $isStatic = $property->isStatic() ? 'static ' : '';
+		$properties = $this->definition->getProperties();
+		foreach ($properties as $property) {
+			$code .= "\n";
 
-            $value = $property->getValue();
-            if (null === $value) {
-                $code .= <<<EOF
+			if ($docComment = $property->getDocComment()) {
+				$code .= $docComment . "\n";
+			}
+			$isStatic = $property->isStatic() ? 'static ' : '';
+
+			$value = $property->getValue();
+			if ($value === null) {
+				$code .= <<<EOF
     $isStatic{$property->getVisibility()} \${$property->getName()};
 EOF;
-            } else {
-                $value = is_array($property->getValue()) ? self::exportArray($property->getValue(), 8) : var_export($property->getValue(), true);
+			} else {
+				$value = is_array($property->getValue()) ? self::exportArray($property->getValue(), 8) : var_export($property->getValue(), true);
 
-                $code .= <<<EOF
+				$code .= <<<EOF
     $isStatic{$property->getVisibility()} \${$property->getName()} = $value;
 EOF;
-            }
-        }
-        if ($properties) {
-            $code .= "\n";
-        }
+			}
+		}
+		if ($properties) {
+			$code .= "\n";
+		}
 
-        return $code;
-    }
+		return $code;
+	}
 
-    private function addMethods()
-    {
-        $code = '';
 
-        foreach ($this->definition->getMethods() as $method) {
-            $code .= "\n";
+	private function addMethods() {
+		$code = '';
 
-            // doc comment
-            if ($docComment = $method->getDocComment()) {
-                $code .= $docComment."\n";
-            }
+		foreach ($this->definition->getMethods() as $method) {
+			$code .= "\n";
 
-            // isFinal
-            $isFinal = $method->isFinal() ? 'final ' : '';
+			// doc comment
+			if ($docComment = $method->getDocComment()) {
+				$code .= $docComment . "\n";
+			}
 
-            // isStatic
-            $isStatic = $method->isStatic() ? 'static ' : '';
+			// isFinal
+			$isFinal = $method->isFinal() ? 'final ' : '';
 
-            // abstract
-            if ($method->isAbstract()) {
-                $code .= <<<EOF
+			// isStatic
+			$isStatic = $method->isStatic() ? 'static ' : '';
+
+			// abstract
+			if ($method->isAbstract()) {
+				$code .= <<<EOF
     abstract $isStatic{$method->getVisibility()} function {$method->getName()}({$method->getArguments()});
 EOF;
-            } else {
-                $methodCode = trim($method->getCode());
-                if ($methodCode) {
-                    $methodCode = '    '.$methodCode."\n    ";
-                }
-                $code .= <<<EOF
+			} else {
+				$methodCode = trim($method->getCode());
+				if ($methodCode) {
+					$methodCode = '    ' . $methodCode . "\n    ";
+				}
+				$code .= <<<EOF
     $isFinal$isStatic{$method->getVisibility()} function {$method->getName()}({$method->getArguments()})
     {
     $methodCode}
 EOF;
-            }
+			}
 
-            $code .= "\n";
-        }
+			$code .= "\n";
+		}
 
-        return $code;
-    }
+		return $code;
+	}
 
-    private function endClass()
-    {
-        $code = '';
 
-        if (!$this->definition->getProperties() && !$this->definition->getMethods()) {
-            $code .= "\n";
-        }
+	private function endClass() {
+		$code = '';
 
-        $code .= <<<EOF
+		if (!$this->definition->getProperties() && !$this->definition->getMethods()) {
+			$code .= "\n";
+		}
+
+		$code .= <<<EOF
 }
 EOF;
 
-        return $code;
-    }
+		return $code;
+	}
+
+
 }

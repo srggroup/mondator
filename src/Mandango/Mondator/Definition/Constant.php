@@ -2,24 +2,21 @@
 
 namespace Mandango\Mondator\Definition;
 
-class Constant 
-{
-    private $name;
-    private $value;
+class Constant {
 
-    public function __construct($name, $value)
-    {
-        $this->name = $name;
-        $this->value = $value;
-    }
 
-    public function getName()
-    {
-        return $this->name;
-    }
+	public function __construct(private $name, private $value) {
+	}
 
-    public function getValue()
-    {
-        return $this->value;
-    }
+
+	public function getName() {
+		return $this->name;
+	}
+
+
+	public function getValue() {
+		return $this->value;
+	}
+
+
 }

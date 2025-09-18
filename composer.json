@@ -18,11 +18,30 @@
             "email": "adam.balint@srg.hu"
         }
     ],
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://composer.srggroup.dev/"
+		}
+	],
     "require": {
-        "php":       "^8.1",
-        "twig/twig": "^3.4"
+        "php":       "^8.4",
+        "twig/twig": "^3.21"
     },
+	"require-dev": {
+		"srggroup/srg_standards": "v2.0.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^v1.1.2",
+		"vimeo/psalm": "^6.13.1"
+	},
     "autoload": {
         "psr-0": { "Mandango\\Mondator\\": "src/" }
-    }
+    },
+	"extra": {
+		"phpcodesniffer-search-depth": 5
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
 }

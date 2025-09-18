@@ -11,68 +11,60 @@
 
 namespace Mandango\Mondator;
 
+use ArrayObject;
+
 /**
  * Extension is the base class for extensions.
- *
- * @author Pablo Díez <pablodip@gmail.com>
- *
- * @api
  */
-abstract class Extension extends ClassExtension
-{
-    /**
-     * Pre global process of the extension.
-     *
-     * @param \ArrayObject                $configClasses The config classes.
-     * @param Mandango\Mondator\Container $container     The global container.
-     *
-     * @api
-     */
-    public function preGlobalProcess(\ArrayObject $configClasses, Container $container)
-    {
-        $this->configClasses = $configClasses;
-        $this->definitions = $container;
+abstract class Extension extends ClassExtension {
 
-        $this->doPreGlobalProcess();
 
-        $this->configClasses = null;
-        $this->definitions = null;
-    }
+	/**
+	 * Pre global process of the extension.
+	 *
+	 * @param ArrayObject $configClasses             The config classes.
+	 * @param Mandango\Mondator\Container $container The global container.
+	 */
+	public function preGlobalProcess(ArrayObject $configClasses, Container $container) {
+		$this->configClasses = $configClasses;
+		$this->definitions = $container;
 
-    /**
-     * Do the pre global process.
-     *
-     * @api
-     */
-    protected function doPreGlobalProcess()
-    {
-    }
+		$this->doPreGlobalProcess();
 
-    /**
-     * Post global process of the extension.
-     *
-     * @param \ArrayObject                $configClasses The config classes.
-     * @param Mandango\Mondator\Container $container     The global container.
-     *
-     * @api
-     */
-    public function postGlobalProcess(\ArrayObject $configClasses, Container $container)
-    {
-        $this->configClasses = $configClasses;
-        $this->definitions = $container;
+		$this->configClasses = null;
+		$this->definitions = null;
+	}
 
-        $this->doPostGlobalProcess();
 
-        $this->configClasses = null;
-        $this->definitions = null;
-    }
+	/**
+	 * Post global process of the extension.
+	 *
+	 * @param ArrayObject $configClasses             The config classes.
+	 * @param Mandango\Mondator\Container $container The global container.
+	 */
+	public function postGlobalProcess(ArrayObject $configClasses, Container $container) {
+		$this->configClasses = $configClasses;
+		$this->definitions = $container;
 
-    /**
-     * Do the post global process.
-     *
-     * @api
-     */
-    protected function doPostGlobalProcess()
-    {
-    }
+		$this->doPostGlobalProcess();
+
+		$this->configClasses = null;
+		$this->definitions = null;
+	}
+
+
+	/**
+	 * Do the pre global process.
+	 */
+	protected function doPreGlobalProcess() {
+	}
+
+
+	/**
+	 * Do the post global process.
+	 */
+	protected function doPostGlobalProcess() {
+	}
+
+
 }
