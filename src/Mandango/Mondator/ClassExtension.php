@@ -33,7 +33,7 @@ abstract class ClassExtension {
 
 	protected $class;
 
-	protected $configClasses;
+	protected ?ArrayObject $configClasses;
 
 	protected $configClass;
 

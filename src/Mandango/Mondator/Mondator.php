@@ -225,8 +225,8 @@ class Mondator {
 	}
 
 
-	private function generateContainersClassesExtensions($globalExtensions, $classesExtensions, $configClasses) {
-		foreach (array_keys($configClasses) as $class) {
+	private function generateContainersClassesExtensions(array $globalExtensions, ArrayObject $classesExtensions, ArrayObject $configClasses) {
+		foreach (array_keys($configClasses->getArrayCopy()) as $class) {
 			if (isset($classesExtensions[$class])) {
 				continue;
 			}
