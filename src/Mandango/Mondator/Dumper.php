@@ -136,7 +136,7 @@ EOF;
 
 		// parent class
 		if ($parentClass = $this->definition->getParentClass()) {
-			$declaration .= ' extends ' . $parentClass;
+			$declaration .= ' extends ' . '\\' . ltrim($parentClass, '\\');
 		}
 
 		// interfaces
